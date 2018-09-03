@@ -1,0 +1,232 @@
+/* Create a program to allow a user to play a modified “craps” games. The rules will be as follows:
+
+1) User starts with $50.00 as their total.
+
+2) Ask the user for their bet (maximum bet is their current total).
+
+3) Throw a pair of dice.
+
+a) If the total value is 7 or 11, the user is an instant winner. The user has the amount bet added back into their total. Ask the user if they wish to play again and if so they start at step two above.
+
+b) If the total value is 2, 3, or 12, the user is an instant loser. The user has the amount bet deducted from their total. Ask the user if they wish to play again and if so they start at step two above.
+
+c) If the total is anything else, remember this total as the “point” and roll again.
+
+i) If the new total is equal to the “point”, the user wins and the process is the same as winning in (a) above
+
+ii) If the new total is a 7, the user loses. And the process is the same as losing in (b) above.
+
+iii) If the new total is anything else the user must roll again and again try to match the “point” of the first roll. */
+
+
+#include "stdafx.h"			//reduces compile time
+#include <iostream>			// Header that defines the standard input/output stream objects: cin cout
+#include <cctype>           //classify and transform individual characters isdigit isalpha
+#include <string>			//stoi
+#include <cstdlib>			// srand, (atoi not used just making note, similar to stoi)
+#include <ctime>			// Used for time, to make srand truly random
+
+int main()						
+{
+	using namespace std;
+
+	int start = 50;							// what you start with
+	int bet = 0;							
+	int sum = 0;							// dice value
+	int count = 0;							//length of entry
+	string bets;							// cin entry
+	//-----------------------------------------------------
+	int die1 = 0;
+	int die2 = 0;
+	//-----------------------------------------------------
+	string play;							// play again y/n
+	int point = 0;							// try to match 
+	int compare = 0;						// changing until matches point
+	srand((int)time(0));					// Uses #ctime to be truly random
+
+	cout << " \t\t\t CRAPS - PLAY NOW" << endl;
+	cout << " \t\t\t ****************" << endl;
+	cout << " \t\t\t $$$$$$$$$$$$$$$$" << endl;
+	cout << " \t\t\t WIN BIG TODAY " << endl;
+
+
+	cout << R"(
+ /\' .\    _____	    /\' .\    _____		/\' .\    _____
+/: \___\  / .  /\          /: \___\  / .  /\	       /: \___\  / .  /\
+\' / . / /____/..\         \' / . / /____/..\	       \' / . / /____/..\
+ \/___/  \'  '\  /          \/___/  \'  '\  /		\/___/  \'  '\  /
+	  \'__'\/                    \'__'\/			 \'__'\/                                       
+)" << endl;
+
+	cout << "******************************************************************" << endl;
+	cout << " INSTANT Win - Roll 7 / 11 -- INSTANT Lose - 2 / 3 / 12" << endl;
+	cout << endl;
+	cout << " Not INSTANT ROLLS - Roll again until DICE = MATCH, 7 INSTANT loss" << endl;
+	cout << endl;
+	cout << "                  Max/MAX/max for Maximum Bet                     " << endl;
+	cout << "******************************************************************" << endl;
+	cout << endl;
+
+	while (play != "no" && start > 0)               // continue playing and if your starting amount is over 0
+	{
+		mark:														//goto to jump back to begining of loop
+		cout << "\t Enter Bet (max bet " << start << "):" << endl;
+		cin >> bets;
+		count = size(bets);							//Count how long the entry is, used for checking entry
+		
+		if (!isdigit(bets[0]) && (!isalpha(bets[0])))			// Make sure cin is a #  or letter
+		{
+			cout << "ERROR - Enter a number or max" << endl;
+			continue;
+		} 
+		else if (isalpha(bets[0]))                    // if letter make sure the entry is made up of only letters
+		{
+			for (int i = 0; i < count; ++i)
+			{
+				if (!isalpha(bets[i]))
+				{
+					cout <<  "Word Input Error - Enter a Valid Word" << endl;
+					goto mark;							//goto to jump back to begining of loop
+				}
+			}
+		}
+		    else if (isdigit(bets[0]))					 // if # make sure the entry is made up of only numbers
+			{
+				for (int i = 0; i < count; ++i)
+				{
+					if (!isdigit(bets[i]))
+					{
+						cout <<  "Number Input Error - Enter a Valid Number" << endl;
+						goto mark;							//goto to jump back to begining of loop
+					}
+				}
+				
+			}
+			
+		
+			if (bets == "max" || bets == "MAX" || bets == "Max")   
+			{
+			bet = start;								// bet all of your amount
+			}
+			else if (isdigit(bets[0]))
+			{
+				bet = stoi(bets);						// change the cin string value to numeric
+			}
+			else 
+			{
+				cout << "ERROR - Enter a number or max" << endl;	// if a single letter is typed
+				continue;
+			}
+			
+			if (bet > start || start <= 0)					// check if you have that amount
+			{
+				cout << "You don't have that much" << endl;
+				cout << endl;
+				continue;
+			}
+			else if (bet == 0)								//if you type 0 goes back to beg of loop
+			{
+				continue;
+			}
+
+			die1 = rand() % 6 + 1;							// rand uses time for truly random
+			die2 = rand() % 6 + 1;
+			sum = die1 + die2;								// dice sum
+
+			cout << "DIE: " << die1 << " " << "DIE: " << die2 << " " << " Total = " << sum << endl;
+			cout << endl;
+
+			if (sum == 2 || sum == 3 || sum == 12)				// INSTANT LOSE ROLLS
+			{
+				start -= bet;							       // subtract from your start amount
+				cout << "You Lost " << " -$ " << bet << endl;
+				cout << "You now have " << start << endl;
+				if (start <= 0)
+				{
+					break;
+				}
+				cout << "Play Again ? yes/no" << endl;
+				cin >> play;
+				continue;
+
+			}
+			else if (sum == 7 || sum == 11)						// INSTANT WIN ROLLS
+			{
+				cout << "Winner " << " +$ " << bet << endl;
+				start += bet;									// add to your start amount
+				cout << "You now have " << start << endl;
+				if (start <= 0)
+				{
+					break;
+				}
+				cout << "Play Again ? yes/no" << endl;
+				cin >> play;
+				continue;
+			}
+			else if (sum == 4 || sum == 5 || sum == 6 || sum == 8 || sum == 9 || sum == 10)
+			{
+				point = sum;										// NEED TO MATCH ROLLS
+				while (compare != point)
+				{
+
+					die1 = rand() % 6 + 1;
+					die2 = rand() % 6 + 1;
+					compare = die1 + die2;
+					cout << "Rolled Again" << endl;
+					cout << "DIE: " << die1 << " " << "DIE: " << die2 << " " << " Total = " << compare << endl;
+					cout << endl;
+					cout << "Match: " << point << endl;
+					cout << endl;
+
+					if (compare == 7)							// LOOSING MATCH ROLL
+					{
+						start -= bet;							// subtract from your start amount
+						cout << "SEVEN ROLLED YOU LOSE" << " -$ " << bet << endl;
+						cout << endl;
+						cout << "You now have " << start << endl;
+						if (start <= 0)
+						{
+							break;
+						}
+						cout << " Play Again ? yes/no" << endl;
+						cin >> play;
+						break;
+					}
+
+					else if (compare == point)						//MATCHING WIN
+
+					{
+						cout << "*MATCHED !* " << " +$ " << bet << endl;
+						start += bet;								// add to your start amount
+						cout << "You now have " << start << endl;
+						if (start <= 0)
+						{
+							break;
+						}
+						cout << " Play Again ? yes/no" << endl;
+						cin >> play;
+						break;
+					}
+
+
+				}
+
+
+
+			}
+
+			continue;
+		}
+		cout << endl;											// EXIT 
+		cout << "\t******************" << endl;
+		cout << "\tThanks for Playing" << endl;
+		cout << endl;
+		cout << "\tBetter luck next time" << endl;
+		cout << endl;
+		cout << "\t********************" << endl;
+		cout << endl;
+
+
+		return 0;
+
+}
