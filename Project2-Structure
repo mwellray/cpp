@@ -1,0 +1,87 @@
+/*The Fruit structure contains three members.
+
+The first member holds the name of the fruit.
+
+The second member holds the weight (which may have a fractional part) of the fruit in lbs,
+
+and the third member holds the number of calories(an integer value) in the per lb of the fruit.
+
+Write a program that declares such a structure and creates a Fruit variable called TodaysFruit. 
+
+The program further ask the users to give the name, weight and the calories for 5 -
+-(let us call them as FruitA, FruitB, FruitC, FruitD, and FruitE) fruits -
+-and stores that information in the TodaysFruit variable. 
+
+Once these are stored, the contents of the structure variable TodaysFruit should be displayed. 
+For asking the users to give input and later on for displaying the details of the TodaysFruit use some sort of loop. */
+
+#include "stdafx.h"
+#include <iostream> 
+
+
+struct fruit
+{
+	char name[20];
+	float weight;
+	int calories;
+};
+
+int main()
+{
+	using namespace std;
+	int count = 0;
+	int display = 0;
+	//__________________________________________________________________________________________________//___________________________________________________________________
+	cout << "Welcome to the Fruit Structure: " << endl;
+
+	cout << "The Fruit Structure has 3 members." << endl;
+
+	cout << "The 1st member - holds the NAME of the Fruit" << endl;
+
+	cout << "The 2nd member - holds the WEIGHT in lbs of the Fruit" << endl;
+
+	cout << "The 3rd member - holds the # of CALORIES per lb of Fruit" << endl;
+	
+	cout << endl;
+//__________________________________________________________________________________________________
+
+
+	fruit Todaysfruit[5] =
+	{
+		{ "FruitA", 0, 0},
+		{ "FruitB", 0, 0},
+		{ "FruitC", 0 , 0},
+		{ "FruitD", 0 , 0},
+		{ "FruitE", 0 ,0},
+
+	};
+//__________________________________________________________________________________________________
+	while (4 >= count)
+	{
+		cout << "What is the weight of " << Todaysfruit[count].name << " ?" << endl;
+		cin >> Todaysfruit[count].weight;
+
+		cout << "# of CALORIES per lb of " << Todaysfruit[count].name << " ?" << endl;
+		cin >> Todaysfruit[count].calories;
+
+		count++;
+	} 
+//__________________________________________________________________________________________________
+	cout << endl;
+	cout << endl;
+	cout << "Todays Fruit: " << endl;
+	cout << endl;
+	
+	while (4 >= display)
+	{
+		cout << Todaysfruit[display].name << ", " << Todaysfruit[display].weight << " lbs, " << Todaysfruit[display].calories << " calories per lb" << endl;
+		cout << endl;
+		display++;
+	}
+
+
+
+//__________________________________________________________________________________________________
+	return 0;
+}
+
