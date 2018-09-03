@@ -1,0 +1,113 @@
+/*Project 5 - Need to have three text files(input1.txt, input2.txt, and input3.txt)
+
+Write a program that opens two text files (input1.txt and input2.txt) for input and one for output (output.txt). 
+The program should merge the two input files in the output files. 
+
+While doing the merge, IT WILL READ ONE LINE FROM INPUT1.TXT AND ONE LINE FROM INPUT2.TXT 
+and write those in the output file one after other. 
+
+Then it will read the next line from input1.txt and next line from input2.txt and write them one after other in the output file. 
+
+Here is an example.
+
+
+input1.txt:
+
+
+This is the first line in input1.txt.
+
+This is the second line in input1.txt.
+
+This is the third line in input1.txt.
+
+This is the fourth line in input1.txt.
+
+input2.txt:
+
+
+This is the first line in input2.txt.
+
+This is the second line in input2.txt.
+
+This is the third line in input2.txt
+
+.
+
+outtput.txt
+
+This is the first line in input1.txt.
+
+This is the first line in input2.txt.
+
+This is the second line in input1.txt.
+
+This is the second line in input2.txt.
+
+This is the third line in input1.txt.
+
+This is the third line in input2.txt.
+
+This is the fourth line in input1.txt.
+
+After the writing in output.txt, count the number of lines in output.txt. 
+Also, write the number of times term ‘input1’ appears in output.txt file. */
+
+#include "stdafx.h"
+#include <iostream>
+#include <fstream>          // file I/O support
+#include <cstdlib>          // support for exit()
+#include <string>
+#include <cctype>
+#include <set>
+
+
+using namespace std;
+const int SIZE = 100;
+double value;
+double sum = 0.0;
+int count = 0;          // number of items read
+string input;
+string input2;
+string lookfor = "input1";
+
+int main()
+{
+	int count = 0;
+	int inputcount = 0;
+	char loop = 'a';
+	ifstream file1("input1.txt");
+	ifstream file2("input2.txt");
+	ofstream output("output.txt");
+
+	while (!file1.eof() && !file2.eof())
+	{
+			getline(file1, input);       // get first value
+			
+			if (input.find_first_not_of(' ') != string::npos)
+			{
+				output << input << endl;
+				++count;
+			}
+							
+			
+		getline(file2, input2);       // get first value
+		
+		if (input2.find_first_not_of(' ') != string::npos)
+		{
+			output << input2 << endl;
+			++count;
+		}
+		
+		if ((input.find(lookfor)) != string::npos || (input2.find(lookfor)) != string::npos) 
+		{
+			++inputcount;
+		}
+						
+	} 	
+
+	output << "-----------------------------------" << endl;
+	output << "Number of Lines: " << count << endl;
+	output << "'input1' appears " << inputcount << " times" << endl;
+		
+	return 0;
+}
