@@ -1,0 +1,248 @@
+/*Develop a class which is called DECIMALCLASS. This class has TWO DATA MEMBERS. 
+The first one is an INTEGERPART and the second is a DECIMALPART. 
+For example if num1 is an object of Decimal Class and its integerPart is 100 and decimalPart is 33,
+the FLOATING POINT NUMBER WHICH NUM1 represents is 100.33. 
+
+In this class you need to overload the + (addition) and the - (substraction) operators to add the two objects of DecimalClass. 
+
+If the sum of the decimalPart after adding two objects are GREATER THAN 100 deduct 100 from the DecimalPart and add 1 to integerPart. 
+
+Similarly if the difference of the decimalPart after subtracting one objects from other is negative, deduct 1 from the 
+intergerPart and add 100 to decimalPart. 
+
+Here is an example:
+
+Sum Example:
+
+Object  Integer Part        Decimal Part
+
+num1    48           31
+
+num2    23           71
+
+num1+num2      72           2
+
+Subtraction Example
+
+Object  IntegerPart         decimalPart
+
+num1    48           31
+
+num2    23           71
+
+num1-num2       24           60
+
+You need to write a test program (main) which declares at least 4 objects of the DecimalClass and performs 
+the addition and subtraction of the different objects. 
+You should also have functions to display the data members of each object and the results. */
+
+#include "stdafx.h"  //reduces compile time
+#include <iostream>  // Header that defines the standard input/output stream objects: cin cout
+#include <cmath>    //functions to compute common mathematical operations and transformations:
+#include <string>   //stoi
+#include <vector>  // sequence container that encapsulates dynamic size arrays.
+
+
+using namespace std;
+
+string check;		//size of input
+int sizechk = 0;	//length of input
+int intchk = 0;		//number check
+
+void header();		//function to seperate add/sub columns 
+
+class DecimalClass
+{
+
+private:			// only accessible from within other members of same class
+	float object;
+	int integer;
+	int decimal;
+	string name;
+	int dec = 0;
+
+public:			
+	int k = 0;		//used for integer
+	int f = 0;		//used for decimal
+	double s = 0;	//used for float object
+
+	DecimalClass(int bs) { integer = bs; }
+	friend DecimalClass operator+(const DecimalClass &a, const DecimalClass &b);
+	friend DecimalClass operator-(const DecimalClass &c, const DecimalClass &g);
+	
+
+	DecimalClass()
+	{
+		object = 0;
+		integer = 0;
+		decimal = 0;
+	}
+
+	DecimalClass(float l, int f, int d)
+	{
+		object = l;
+		integer = f;
+		decimal = d;
+	}
+	
+	void get()										//get numbers
+	{
+		cout << "enter number" << endl;
+		cin >> object;
+		input(rnd(object));							//function input
+		integer = k;
+		decimal = f;
+	}
+	
+	float rnd(float var)							//round off 
+	{
+		float value = (float)(var * 100 + .5);
+		return (double)value / 100;
+	}
+
+	int input(float num)							//used in get()
+	{
+		s = num;     //double
+		k = num; // int
+		f = (s - k) * 100;
+		return 0;
+	} 
+
+	void show(int nber)                        //display numbers
+	{
+		//cout << endl;
+		//cout << "num" << nber << "\t" << object << "\t\t" << integer << "\t" << decimal << endl;
+		cout  << "\t" << object << "\t\t" << integer << "\t" << decimal << endl;
+	}
+
+	void sumd()									//display totals
+	{
+		cout << endl;
+		cout << "Total" << "\t\t\t" << integer << "\t" << decimal << endl;
+
+	}
+
+
+	void decimalsum()                        // GREATER THAN 100 deduct 100 from the DecimalPart and add 1 to integerPart. 
+	{
+		while (decimal >= 100)
+		{
+			integer++;
+			decimal -= 100;
+		}
+		return;
+	}    
+
+	void decimalsub()						//deduct 1 from the intergerPart and add 100 to decimalPart
+	{
+		while (decimal < 0)
+		{
+			decimal += 100;
+			integer--;
+		}
+		return;
+	}
+};
+
+DecimalClass operator+(const DecimalClass &a, const DecimalClass &b)         //overload
+{
+float l = a.object + b.object;
+int f = a.integer + b.integer;
+int d = a.decimal + b.decimal;
+return DecimalClass(l, f, d);
+} 
+
+DecimalClass operator-(const DecimalClass &c, const DecimalClass &g)    //overload
+{
+	float l = c.object - g.object;
+	int f = c.integer - g.integer;
+	int d = c.decimal - g.decimal;
+	return DecimalClass(l, f, d);
+} 
+//---------------------------------------------------------------
+int main()
+{
+	vector<DecimalClass> ents(10);             //vector that will hold class objects(object, integer, decimal)
+
+	while (true)								// check if initial entry is not a letter, entries are 4 or more
+	{
+	mark:
+		cout << "How many Numbers to Enter ?: " << endl;
+		cin >> check;
+		sizechk = size(check);
+		if (!isdigit(check[0]))
+		{
+			cout << "ENTER A NUMERAL" << endl;
+			continue;
+		}
+		else if (isdigit(check[0]))
+		{
+			for (int i = 0; i < sizechk; i++)
+			{
+				if (!isdigit(check[i])) //|| check[i] == '.')
+				{
+					cout << "Input Error " << endl;
+					goto mark;
+				}
+
+			}
+
+		}
+
+		intchk = stoi(check);
+
+		if (intchk < 4)
+		{
+			cout << "Enter at least 4 numerals" << endl;
+			continue;
+		}
+		else
+		{
+			break;
+		}
+	}                     
+
+	ents.resize(intchk);                        //resizes vector for numbers requested
+
+	for (int i = 0; i < intchk; i++)            //gets number of enteries 
+	{
+		ents[i].get();
+	}
+
+	header();                                   // object, integer, and decimal header
+
+	for (int i = 0; i < intchk; i++)			// list numbers
+	{
+		cout << "num" << i + 1;
+		ents[i].show(i);
+	}
+
+	DecimalClass sum = ents[0] + ents[1] + ents[2] + ents[3];              // sum class stores summed output
+	sum.decimalsum();
+	cout << "---------Numbers Summed----------";
+	sum.sumd();
+	
+	header();
+	for (int i = 0; i < intchk; i++)           //list numbers 
+	{
+		cout << "num" << i + 1;
+		ents[i].show(i);
+	}
+
+
+	DecimalClass sub = ents[0] - ents[1] - ents[2] - ents[3];          // sub class stores summed output
+	sub.decimalsub();
+	cout << "-------Numbers Subtracted--------";
+	sub.sumd();
+
+	cout << endl;
+	cout << endl;
+	return 0;
+}
+
+void header()
+{
+	cout << endl;
+	cout << "---------------------------------" << endl;
+	cout << "Name    " << "Object    " << "Integer    " << "Decimal" << endl;
+}
