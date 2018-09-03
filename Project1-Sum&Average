@@ -1,0 +1,34 @@
+//Sum up numbers and average 
+
+#include "stdafx.h"
+#include <iostream> 
+
+	using namespace std;
+
+	int sum(int one, int two, int three, int four, int five)
+	{
+		return one + two + three + four + five;
+	}
+
+	int avg(int x)
+	{
+		return x / 16;
+	}
+
+	int main()
+	{
+		int ab = 200;
+		int bc = 100;
+		int cd = 150;
+		int de = 100;
+		int ea = 250;
+		int s = sum(ab, bc, cd, de, ea);
+
+		cout << "Total trip time: 16 hours." << endl;
+
+		cout << "Total distance traveled: " << s << " miles." << endl;
+
+		cout << "Average Speed: " << avg(s) << " miles per hour." << endl;
+
+		return 0;
+	}
